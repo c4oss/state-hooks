@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "dequal": "^2.0.3",
+        "shallowequal": "^1.1.0",
         "value-or-factory": "^0.0.1"
     },
     "peerDependencies": {
@@ -24,6 +25,7 @@
     },
     "devDependencies": {
         "@types/react": "^19.2.18",
+        "@types/shallowequal": "^1.1.5",
         "react": "^19.2.8",
         "typescript": "^7.0.2"
     }

@@ -16,6 +16,7 @@ export function useAsyncTracker() {
     return {
         isRunning: runs.current > 0,
         runningCount: runs.current,
+        reset: runs.reset,
         run: useCallback((promise: ValueOrFactory<PromiseLike<unknown>>) => {
             runs.increment()
             return callOrGet(promise).then(() => {

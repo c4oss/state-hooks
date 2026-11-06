@@ -14,3 +14,6 @@ export function useDeepCompareCallback<T extends Function>(callback: T, deps: De
 export function useDeepCompareMemo<T>(factory: () => T, deps: DependencyList) {
     return useCustomCompareMemo(factory, deps, dequal)
 }
+export function useDeepCompareConstant<T>(value: T) {
+    return useCustomCompareMemo(() => value, [value], dequal)
+}
