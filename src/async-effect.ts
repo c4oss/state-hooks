@@ -30,14 +30,14 @@ export function useAsyncEffectOnce(callback: AsyncEffectCallback) {
     })
 }
 
-export function useCustomCompareAsyncEffect<D extends DependencyList>(callback: AsyncEffectCallback, deps: D, depsEqual: DepsAreEqual<D>) {
+export function useCustomCompareAsyncEffect<D extends DependencyList>(callback: AsyncEffectCallback, deps: D, depsEqual: DepsAreEqual) {
     const thrower = useThrower()
     useCustomCompareEffect(() => {
         callback().then(() => void 0, thrower)
     }, deps, depsEqual)
 }
 
-export function useCustomCompareAsyncUpdateEffect<D extends DependencyList>(callback: AsyncEffectCallback, deps: D, depsEqual: DepsAreEqual<D>) {
+export function useCustomCompareAsyncUpdateEffect<D extends DependencyList>(callback: AsyncEffectCallback, deps: D, depsEqual: DepsAreEqual) {
     const thrower = useThrower()
     useCustomCompareUpdateEffect(() => {
         callback().then(() => void 0, thrower)

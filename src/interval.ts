@@ -15,7 +15,7 @@ export function useInterval(timeout: number, effectCallback: () => void, deps: D
         effect
     ])
 }
-export function useCustomCompareInterval<D extends DependencyList>(timeout: number, effectCallback: () => void, deps: D, depsAreEqual: DepsAreEqual<D>) {
+export function useCustomCompareInterval<D extends DependencyList>(timeout: number, effectCallback: () => void, deps: D, depsAreEqual: DepsAreEqual) {
     const effect = useCustomCompareCallback(effectCallback, deps, depsAreEqual)
     useEffect(() => {
         const interval = setInterval(effect, timeout)
@@ -55,7 +55,7 @@ export function useAsyncInterval(interval: number, effectCallback: () => Promise
         run,
     ])
 }
-export function useAsyncCustomCompareInterval<D extends DependencyList>(interval: number, effectCallback: () => PromiseLike<void>, deps: D, depsAreEqual: DepsAreEqual<D>) {
+export function useAsyncCustomCompareInterval<D extends DependencyList>(interval: number, effectCallback: () => PromiseLike<void>, deps: D, depsAreEqual: DepsAreEqual) {
     const [next, setNext] = useState(Date.now)
     const run = useAt(next)
     const effect = useCustomCompareCallback(effectCallback, deps, depsAreEqual)

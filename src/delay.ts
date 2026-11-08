@@ -37,7 +37,7 @@ export function useDeepCompareDelay(delay: number | undefined, deps: DependencyL
  * @param delay Delay.
  * @returns True or false.
  */
-export function useCustomCompareDelay<D extends DependencyList>(delay: number | undefined, deps: D, depsEqual: DepsAreEqual<D>) {
+export function useCustomCompareDelay<D extends DependencyList>(delay: number | undefined, deps: D, depsEqual: DepsAreEqual) {
     return useAt(useCustomCompareMemo(() => delay === undefined ? undefined : Date.now() + delay, deps, depsEqual))
 }
 

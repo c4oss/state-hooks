@@ -1,2 +1,2 @@
 
-export type DepsAreEqual = (prevDep: unknown, nextDep: unknown) => boolean
+export type DepsAreEqual<T = unknown> = (prevDep: T, nextDep: T) => boolean

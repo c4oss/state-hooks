@@ -52,7 +52,7 @@ export function useTrackingAsync<R, A extends readonly unknown[]>(func: (...args
 export function useTrackingAsyncCallback<R, A extends readonly unknown[]>(func: (...args: A) => PromiseLike<R>, deps: DependencyList) {
     return useTrackingAsync(useCallback(func, deps))
 }
-export function useCustomCompareTrackingAsyncCallback<R, A extends readonly unknown[], D extends DependencyList>(func: (...args: A) => PromiseLike<R>, deps: D, depsAreEqual: DepsAreEqual<D>) {
+export function useCustomCompareTrackingAsyncCallback<R, A extends readonly unknown[], D extends DependencyList>(func: (...args: A) => PromiseLike<R>, deps: D, depsAreEqual: DepsAreEqual) {
     return useTrackingAsync(useCustomCompareCallback(func, deps, depsAreEqual))
 }
 export function useDeepCompareTrackingAsyncCallback<R, A extends readonly unknown[]>(func: (...args: A) => PromiseLike<R>, deps: DependencyList) {

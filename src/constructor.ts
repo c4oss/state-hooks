@@ -30,7 +30,7 @@ export function useConstructor<T, D extends DependencyList>(factory: new (...arg
  * @param deps The dependencies.
  * @returns The new instance of the class.
  */
-export function useCustomCompareConstructor<T, D extends DependencyList>(factory: new (...args: D) => T, deps: [...D], depsAreEqual: DepsAreEqual<readonly [...D]>) {
+export function useCustomCompareConstructor<T, D extends DependencyList>(factory: new (...args: D) => T, deps: [...D], depsAreEqual: DepsAreEqual) {
     return useCustomCompareMemo(() => new factory(...deps), deps, depsAreEqual)
 }
 

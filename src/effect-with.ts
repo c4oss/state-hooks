@@ -17,7 +17,7 @@ export function useEffectWith<D extends DependencyList>(callback: undefined | ((
  * @param callback The callback.
  * @param deps The dependencies.
  */
-export function useCustomCompareEffectWith<D extends DependencyList>(callback: undefined | ((...args: D) => void) | (() => void), deps: [...D], depsAreEqual: DepsAreEqual<readonly [...D]>) {
+export function useCustomCompareEffectWith<D extends DependencyList>(callback: undefined | ((...args: D) => void) | (() => void), deps: [...D], depsAreEqual: DepsAreEqual) {
     useCustomCompareEffect(() => callback?.(...deps), deps, depsAreEqual)
 }
 

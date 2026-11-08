@@ -10,7 +10,7 @@ export function useConstructorCallbackOnce<T>(factory: new () => T) {
 export function useConstructorCallback<T, D extends DependencyList>(factory: new (...args: D) => T, deps: [...D]) {
     return useCallback(() => new factory(...deps), deps)
 }
-export function useCustomCompareConstructorCallback<T, D extends DependencyList>(factory: new (...args: D) => T, deps: [...D], depsAreEqual: DepsAreEqual<readonly [...D]>) {
+export function useCustomCompareConstructorCallback<T, D extends DependencyList>(factory: new (...args: D) => T, deps: [...D], depsAreEqual: DepsAreEqual) {
     return useCustomCompareCallback(() => new factory(...deps), deps, depsAreEqual)
 }
 export function useDeepCompareConstructorCallback<T, D extends DependencyList>(factory: new (...args: D) => T, deps: [...D]) {

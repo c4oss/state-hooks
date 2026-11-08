@@ -11,7 +11,7 @@ export function useAsyncCallback<T extends (...args: any) => Promise<any>, D ext
         callback(...args).catch(thrower)
     }, deps)
 }
-export function useCustomCompareAsyncCallback<T extends (...args: any) => Promise<any>, D extends DependencyList>(callback: T, deps: [...D], depsAreEqual: DepsAreEqual<readonly [...D]>) {
+export function useCustomCompareAsyncCallback<T extends (...args: any) => Promise<any>, D extends DependencyList>(callback: T, deps: [...D], depsAreEqual: DepsAreEqual) {
     const thrower = useThrower()
     return useCustomCompareCallback((...args: Parameters<T>) => {
         callback(...args).catch(thrower)

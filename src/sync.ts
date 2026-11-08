@@ -16,6 +16,6 @@ export function useCustomCompareSyncState<T>(inputValue: T, setInputValue: Dispa
         }
     },
         [inputValue] as const,
-        (a, b) => compare(a[0], b[0]))
+        (a, b) => compare(a as T, b as T))
     return [setInputValue !== undefined ? inputValue : value, setInputValue !== undefined ? setInputValue : setValue] as const
 }
