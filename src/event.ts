@@ -1,5 +1,4 @@
-import { useEffect } from "react"
-import { useArray } from "./array.js"
+import { useEffect, useEffectEvent } from "react"
 import { useDeepCompareConstant } from "./deep-compare.js"
 
 export interface EventTarget<E> {
@@ -9,23 +8,22 @@ export interface EventTarget<E> {
 
 }
 
+/**
+ * Listens for an event on a target, calling the latest `listener` once per event, as it happens (so it can call
+ * `preventDefault`). Changing `listener` doesn't re-subscribe.
+ */
 export function useEvent<T>(target: EventTarget<T>, type: string, listener: (event: T) => void, options?: EventListenerOptions | undefined) {
-    const events = useArray<T>()
+    const onEvent = useEffectEvent(listener)
+    const stableOptions = useDeepCompareConstant(options)
     useEffect(() => {
-        const listener = events.append
-        target.addEventListener(type, listener, options)
+        const handle = (event: T) => onEvent(event)
+        target.addEventListener(type, handle, stableOptions)
         return () => {
-            target.removeEventListener(type, listener)
+            target.removeEventListener(type, handle, stableOptions)
         }
     }, [
-        events,
         target,
         type,
-        useDeepCompareConstant(options),
-    ])
-    useEffect(() => {
-        events.value.forEach(listener)
-    }, [
-        events.value
+        stableOptions,
     ])
 }

@@ -2,15 +2,22 @@ import { ComponentType, createElement, Fragment, ReactNode } from "react"
 import { callOrGet, ValueOrFactory } from "value-or-factory"
 
 /**
+ * A component that can wrap any node: its `children` accepts every `ReactNode`. One that narrows `children` (e.g. to
+ * an element) is rejected.
+ */
+export type Wrapper<W extends { readonly children?: ReactNode | undefined }> = ComponentType<W> & (ReactNode extends W["children"] ? unknown : never)
+
+/**
  * Wraps the transformed component as a child of another.
  */
-export function wrapped<I extends {}, W extends { children?: ReactNode | undefined }>(wrapper: ComponentType<W>, wrapperProps: ValueOrFactory<Omit<W, "children">, [I]>) {
+export function wrapped<I extends {}, W extends { readonly children?: ReactNode | undefined }>(wrapper: Wrapper<W>, wrapperProps: ValueOrFactory<Omit<W, "children">, [I]>) {
     return intercept((props: I) => {
         return {
             type: "transform",
             props: props,
-            //@ts-ignore TODO
-            render: children => createElement(wrapper, { ...callOrGet(wrapperProps, props), children })
+            render: children => {
+                return createElement(wrapper, { ...callOrGet(wrapperProps, props), children } as W)
+            }
         }
     })
 }
