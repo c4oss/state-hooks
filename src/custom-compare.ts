@@ -1,6 +1,6 @@
 import { DependencyList, EffectCallback, useCallback, useEffect, useMemo, useRef } from "react";
 import { DepsAreEqual } from "./types.js";
-import { useIsFirstMount } from "./updates.js";
+import { useSkipMount } from "./updates.js";
 
 function eachEqual<T extends DependencyList>(a: T, b: T, depsAreEqual: DepsAreEqual) {
     if (a.length !== b.length) {
@@ -36,11 +36,6 @@ export function useCustomCompareEffect<D extends DependencyList>(effect: EffectC
 }
 
 export function useCustomCompareUpdateEffect<D extends DependencyList>(effect: EffectCallback, deps: D, depsAreEqual: DepsAreEqual) {
-    const firstMount = useIsFirstMount()
-    return useCustomCompareEffect(() => {
-        if (firstMount) {
-            return
-        }
-        return effect()
-    }, deps, depsAreEqual)
+    const skipping = useSkipMount(effect)
+    return useCustomCompareEffect(skipping, deps, depsAreEqual)
 }

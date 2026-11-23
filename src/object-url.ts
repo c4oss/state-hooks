@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react"
+import { useLayoutEffect, useState } from "react"
 
 /**
  * Creates an object URL (via `URL.createObjectURL`) for a blob, file or media source, and revokes it when the object changes or the component unmounts.
  * A string is treated as a URL that is already usable (such as a remote image `src`) and is returned unchanged.
- * For a blob or media source, the URL is created in an effect, so it is `undefined` on the first render and briefly after the object changes. It is never a URL that has already been revoked.
+ * For a blob or media source, the URL is made in a layout effect: after the first render, but before it's painted, so the
+ * first frame shown already has it. It's never a URL made for another object, or one that has been revoked.
  * @param object The object to create a URL for, or a URL to pass through.
- * @returns The URL, or `undefined` if the object URL is not ready yet.
+ * @returns The URL, or `undefined` on a render before it's made.
  */
 export function useObjectUrl(object: Blob | MediaSource | string) {
-    const [state, setState] = useState<string>()
-    useEffect(() => {
+    // the URL, with the object it's for: a new object has none until its own is made
+    const [made, setMade] = useState<{ readonly object: Blob | MediaSource, readonly url: string }>()
+    useLayoutEffect(() => {
         if (typeof object === "string") {
             return
         }
         const url = URL.createObjectURL(object)
-        setState(url)
+        setMade({ object, url })
         return () => {
             URL.revokeObjectURL(url)
-            setState(undefined)
         }
     }, [
         object
@@ -25,5 +26,5 @@ export function useObjectUrl(object: Blob | MediaSource | string) {
     if (typeof object === "string") {
         return object
     }
-    return state
+    return made?.object === object ? made.url : undefined
 }

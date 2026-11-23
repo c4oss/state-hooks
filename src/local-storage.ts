@@ -1,11 +1,21 @@
 import { useCallback, useEffect, useState } from "react"
 
+function readLocalStorage(key: string) {
+    return window.localStorage.getItem(key) ?? undefined
+}
+
+/**
+ * A value in local storage, by key, and a function to set it: kept up to date as it's set (here, elsewhere in this tab,
+ * or in another tab), and read again if the key changes.
+ */
 export function useLocalStorage(key: string) {
-    const [value, setLocalValue] = useState(() => window.localStorage.getItem(key) ?? undefined)
+    // the last value seen, with its key: for another key, it's read afresh
+    const [seen, setSeen] = useState(() => ({ key, value: readLocalStorage(key) }))
+    const value = seen.key === key ? seen.value : readLocalStorage(key)
     useEffect(() => {
         const listen = (event: StorageEvent) => {
             if (event.key === key) {
-                setLocalValue(event.newValue ?? undefined)
+                setSeen({ key, value: event.newValue ?? undefined })
             }
         }
         window.addEventListener("storage", listen)
